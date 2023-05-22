@@ -1,0 +1,355 @@
+mysql> CREATE TABLE EMPLOYEE(
+     EID VARCHAR(6) PRIMARY KEY,
+     NAME VARCHAR(20),
+     QUALIFICATION VARCHAR(20),
+     AGE INT CHECK( AGE>18 AND AGE<60),
+     DEPID VARCHAR(6));
+
+mysql> DESCRIBE EMPLOYEE;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| EID           | varchar(6)  | NO   | PRI | NULL    |       |
+| NAME          | varchar(20) | YES  |     | NULL    |       |
+| QUALIFICATION | varchar(20) | YES  |     | NULL    |       |
+| AGE           | int         | YES  |     | NULL    |       |
+| DEPID         | varchar(6)  | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+
+mysql> CREATE TABLE SALARY(
+     EID VARCHAR(6) PRIMARY KEY,
+     BASIC DECIMAL(10,2),
+     D_A DECIMAL(10,2),
+     HRA DECIMAL(10,2),
+     BONUS DECIMAL(10,2),
+     TOTAL_SALARY DECIMAL(10,2));
+
+mysql> DESCRIBE SALARY;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| EID          | varchar(6)    | NO   | PRI | NULL    |       |
+| BASIC        | decimal(10,2) | YES  |     | NULL    |       |
+| D_A          | decimal(10,2) | YES  |     | NULL    |       |
+| HRA          | decimal(10,2) | YES  |     | NULL    |       |
+| BONUS        | decimal(10,2) | YES  |     | NULL    |       |
+| TOTAL_SALARY | decimal(10,2) | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+
+mysql> CREATE TABLE DEPARTMENT(
+     DEPID VARCHAR(6),
+     DESCRIPTION VARCHAR(15),
+     HOD VARCHAR(6),
+     LOCATION VARCHAR(20),
+     PRIMARY KEY (DEPID),
+    FOREIGN KEY (HOD) REFERENCES EMPLOYEE(EID));
+
+mysql> DESCRIBE DEPARTMENT;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| DEPID       | varchar(6)  | NO   | PRI | NULL    |       |
+| DESCRIPTION | varchar(15) | YES  |     | NULL    |       |
+| HOD         | varchar(6)  | YES  | MUL | NULL    |       |
+| LOCATION    | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+
+mysql> ALTER TABLE EMPLOYEE ADD FOREIGN KEY(DEPID) REFERENCES DEPARTMENT(DEP
+ID);
+
+mysql> DESCRIBE EMPLOYEE;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| EID           | varchar(6)  | NO   | PRI | NULL    |       |
+| NAME          | varchar(20) | YES  |     | NULL    |       |
+| QUALIFICATION | varchar(20) | YES  |     | NULL    |       |
+| AGE           | int         | YES  |     | NULL    |       |
+| DEPID         | varchar(6)  | YES  | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+
+mysql> INSERT INTO EMPLOYEE(EID, NAME, QUALIFICATION, AGE) VALUES
+     ('EMP001','ABHIJIT MAHATA','MTECH',24),
+     ('EMP002','ABHISHEK DUTTA','MCA',22),
+     ('EMP003','AKSHAY MONDAL','MSC',23),
+     ('EMP004','AMMRISHA CHOWDHURY','MSC',21),
+     ('EMP005','ANANYA DATTA','MSC',22),
+     ('EMP006','ARITRA PAUL','MCA',21),
+     ('EMP007','ARNAB RONG','MCA',21),
+	 ('EMP008','BIMAN MAHATO','BTECH',26),
+	 ('EMP009','BIPUL BARMAN','MTECH',23),
+	 ('EMP010','CHAITANYA CHATURVEDI','MSC',26),
+	 ('EMP011','GAGANDEEP','BTECH',22),
+	 ('EMP012','JAGRITI PRAMANIK','MCA',24),
+	 ('EMP013','JIBAN MANDAL','MTECH',26),
+	 ('EMP014','JOY ROY','BTECH',24),
+	 ('EMP015','MANISH KUMAR SHAW','BTECH',25),
+	 ('EMP016','MAYA MURMU','BTECH',23),
+	 ('EMP017','MOULI DUTTA','MTECH',24),
+	 ('EMP018','NABANITA SAHA','MSC',22),
+	 ('EMP019','NOORAIN AZIZA','BTECH',25),
+ 	 ('EMP020','PREETHA CHAKRAVERTI','MCA',22),
+ 	 ('EMP021','UTSAB TALUKDER','MCA',25);
+mysql> select * from employee;
++--------+----------------------+---------------+------+-------+
+| EID    | NAME                 | QUALIFICATION | AGE  | DEPID |
++--------+----------------------+---------------+------+-------+
+| EMP001 | ABHIJIT MAHATA       | MTECH         |   24 | NULL  |
+| EMP002 | ABHISHEK DUTTA       | MCA           |   22 | NULL  |
+| EMP003 | AKSHAY MONDAL        | MSC           |   23 | NULL  |
+| EMP004 | AMMRISHA CHOWDHURY   | MSC           |   21 | NULL  |
+| EMP005 | ANANYA DATTA         | MSC           |   22 | NULL  |
+| EMP006 | ARITRA PAUL          | MCA           |   21 | NULL  |
+| EMP007 | ARNAB RONG           | MCA           |   21 | NULL  |
+| EMP008 | BIMAN MAHATO         | BTECH         |   26 | NULL  |
+| EMP009 | BIPUL BARMAN         | MTECH         |   23 | NULL  |
+| EMP010 | CHAITANYA CHATURVEDI | MSC           |   26 | NULL  |
+| EMP011 | GAGANDEEP            | BTECH         |   22 | NULL  |
+| EMP012 | JAGRITI PRAMANIK     | MCA           |   24 | NULL  |
+| EMP013 | JIBAN MANDAL         | MTECH         |   26 | NULL  |
+| EMP014 | JOY ROY              | BTECH         |   24 | NULL  |
+| EMP015 | MANISH KUMAR SHAW    | BTECH         |   25 | NULL  |
+| EMP016 | MAYA MURMU           | BTECH         |   23 | NULL  |
+| EMP017 | MOULI DUTTA          | MTECH         |   24 | NULL  |
+| EMP018 | NABANITA SAHA        | MSC           |   22 | NULL  |
+| EMP019 | NOORAIN AZIZA        | BTECH         |   25 | NULL  |
+| EMP020 | PREETHA CHAKRAVERTI  | MCA           |   22 | NULL  |
+| EMP021 | UTSAB TALUKDER	  | MCA		|   25 | NULL  |
++--------+----------------------+---------------+------+-------+
+
+mysql> insert into SALARY(EID,BASIC) values
+     ('EMP001',25000.00),
+     ('EMP002',25000.00),
+     ('EMP003',24000.00),
+     ('EMP004',20000.00),
+     ('EMP005',24000.00),
+     ('EMP006',30000.00),
+     ('EMP007',25000.00),
+     ('EMP008',20000.00),
+     ('EMP009',20000.00),
+     ('EMP010',20000.00),
+     ('EMP011',20000.00),
+     ('EMP012',25000.00),
+     ('EMP013',25000.00),
+     ('EMP014',20000.00),
+     ('EMP015',20000.00),
+     ('EMP016',20000.00),
+     ('EMP017',20000.00),
+     ('EMP018',24000.00),
+     ('EMP019',20000.00),
+     ('EMP020',27000.00),
+     ('EMP021',27000.00);
+
+mysql> SELECT * FROM SALARY;
++--------+----------+------+------+-------+--------------+
+| EID    | BASIC    | D_A  | HRA  | BONUS | TOTAL_SALARY |
++--------+----------+------+------+-------+--------------+
+| EMP001 | 25000.00 | NULL | NULL |  NULL |         NULL |
+| EMP002 | 25000.00 | NULL | NULL |  NULL |         NULL |
+| EMP003 | 24000.00 | NULL | NULL |  NULL |         NULL |
+| EMP004 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP005 | 24000.00 | NULL | NULL |  NULL |         NULL |
+| EMP006 | 30000.00 | NULL | NULL |  NULL |         NULL |
+| EMP007 | 25000.00 | NULL | NULL |  NULL |         NULL |
+| EMP008 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP009 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP010 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP011 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP012 | 25000.00 | NULL | NULL |  NULL |         NULL |
+| EMP013 | 25000.00 | NULL | NULL |  NULL |         NULL |
+| EMP014 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP015 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP016 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP017 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP018 | 24000.00 | NULL | NULL |  NULL |         NULL |
+| EMP019 | 20000.00 | NULL | NULL |  NULL |         NULL |
+| EMP020 | 27000.00 | NULL | NULL |  NULL |         NULL |
+| EMP021 | 27000.00 | NULL | NULL |  NULL |         NULL |
++--------+----------+------+------+-------+--------------+
+
+mysql> insert into DEPARTMENT values
+    ('DEP001','MARKETING','EMP012','KOLKATA'),
+     ('DEP002','SALES','EMP021','HYDERABAD'),
+    ('DEP103','LOGISTICS','EMP013','CHENNAI'),
+     ('DEP004','R&D','EMP007','HYDERABAD'),
+    ('DEP005','HR','EMP020','HYDERABAD'),
+     ('DEP006','LOGISTICS','EMP001','KOLKATA');
+
+mysql> SELECT * FROM DEPARTMENT;
++--------+-------------+--------+-----------+
+| DEPID  | DESCRIPTION | HOD    | LOCATION  |
++--------+-------------+--------+-----------+
+| DEP001 | MARKETING   | EMP012 | KOLKATA   |
+| DEP002 | SALES       | EMP021 | HYDERABAD |
+| DEP004 | R&D         | EMP007 | HYDERABAD |
+| DEP005 | HR          | EMP020 | HYDERABAD |
+| DEP006 | LOGISTICS   | EMP001 | KOLKATA   |
+| DEP103 | LOGISTICS   | EMP013 | CHENNAI   |
++--------+-------------+--------+-----------+
+
+mysql> update EMPLOYEE set DEPID= 'DEP001' where EID in('EMP002','EMP009','EMP012','EMP017');
+
+mysql> update EMPLOYEE set DEPID= 'DEP002' where EID in('EMP004','EMP005','EMP010','EMP021');
+
+mysql> update EMPLOYEE set DEPID= 'DEP004' where EID in('EMP003','EMP007');
+
+mysql> update EMPLOYEE set DEPID= 'DEP005' where EID in('EMP018','EMP020');
+
+mysql> update EMPLOYEE set DEPID= 'DEP006' where EID in('EMP001','EMP014','EMP015','EMP019');
+
+mysql> update EMPLOYEE set DEPID= 'DEP103' where EID in('EMP008','EMP011','EMP013','EMP016');
+
+mysql> SELECT * FROM EMPLOYEE;
++--------+----------------------+---------------+------+--------+
+| EID    | NAME                 | QUALIFICATION | AGE  | DEPID  |
++--------+----------------------+---------------+------+--------+
+| EMP001 | ABHIJIT MAHATA       | MTECH         |   24 | DEP006 |
+| EMP002 | ABHISHEK DUTTA       | MCA           |   22 | DEP001 |
+| EMP003 | AKSHAY MONDAL        | MSC           |   23 | DEP004 |
+| EMP004 | AMMRISHA CHOWDHURY   | MSC           |   21 | DEP002 |
+| EMP005 | ANANYA DATTA         | MSC           |   22 | DEP002 |
+| EMP006 | ARITRA PAUL          | MCA           |   21 | NULL   |
+| EMP007 | ARNAB RONG           | MCA           |   21 | DEP004 |
+| EMP008 | BIMAN MAHATO         | BTECH         |   26 | DEP103 |
+| EMP009 | BIPUL BARMAN         | MTECH         |   23 | DEP001 |
+| EMP010 | CHAITANYA CHATURVEDI | MSC           |   26 | DEP002 |
+| EMP011 | GAGANDEEP            | BTECH         |   22 | DEP103 |
+| EMP012 | JAGRITI PRAMANIK     | MCA           |   24 | DEP001 |
+| EMP013 | JIBAN MANDAL         | MTECH         |   26 | DEP103 |
+| EMP014 | JOY ROY              | BTECH         |   24 | DEP006 |
+| EMP015 | MANISH KUMAR SHAW    | BTECH         |   25 | DEP006 |
+| EMP016 | MAYA MURMU           | BTECH         |   23 | DEP103 |
+| EMP017 | MOULI DUTTA          | MTECH         |   24 | DEP001 |
+| EMP018 | NABANITA SAHA        | MSC           |   22 | DEP005 |
+| EMP019 | NOORAIN AZIZA        | BTECH         |   25 | DEP006 |
+| EMP020 | PREETHA CHAKRAVERTI  | MCA           |   22 | DEP005 |
+| EMP021 | UTSAB TALUKDER       | MCA           |   25 | DEP002 |
++--------+----------------------+---------------+------+--------+
+
+mysql> UPDATE SALARY SET D_A=BASIC*0.25, HRA=BASIC*0.8, BONUS=BASIC*0.5, TOT
+AL_SALARY=BASIC+D_A+HRA+BONUS;
+
+mysql> SELECT * FROM SALARY;
++--------+----------+---------+----------+----------+--------------+
+| EID    | BASIC    | D_A     | HRA      | BONUS    | TOTAL_SALARY |
++--------+----------+---------+----------+----------+--------------+
+| EMP001 | 25000.00 | 6250.00 | 20000.00 | 12500.00 |     63750.00 |
+| EMP002 | 25000.00 | 6250.00 | 20000.00 | 12500.00 |     63750.00 |
+| EMP003 | 24000.00 | 6000.00 | 19200.00 | 12000.00 |     61200.00 |
+| EMP004 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP005 | 24000.00 | 6000.00 | 19200.00 | 12000.00 |     61200.00 |
+| EMP006 | 30000.00 | 7500.00 | 24000.00 | 15000.00 |     76500.00 |
+| EMP007 | 25000.00 | 6250.00 | 20000.00 | 12500.00 |     63750.00 |
+| EMP008 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP009 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP010 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP011 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP012 | 25000.00 | 6250.00 | 20000.00 | 12500.00 |     63750.00 |
+| EMP013 | 25000.00 | 6250.00 | 20000.00 | 12500.00 |     63750.00 |
+| EMP014 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP015 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP016 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP017 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP018 | 24000.00 | 6000.00 | 19200.00 | 12000.00 |     61200.00 |
+| EMP019 | 20000.00 | 5000.00 | 16000.00 | 10000.00 |     51000.00 |
+| EMP020 | 27000.00 | 6750.00 | 21600.00 | 13500.00 |     68850.00 |
+| EMP021 | 27000.00 | 6750.00 | 21600.00 | 13500.00 |     68850.00 |
++--------+----------+---------+----------+----------+--------------+
+
+mysql> ALTER TABLE DEPARTMENT ADD COLUMN NOE INT(10);
+
+mysql> UPDATE DEPARTMENT SET DEPARTMENT.NOE=(SELECT COUNT(EID) FROM EMPLOYEE WHERE DEPARTMENT.DEPID=EMPLOYEE.DEPID);
++--------+-------------+--------+-----------+------+
+| DEPID  | DESCRIPTION | HOD    | LOCATION  | NOE  |
++--------+-------------+--------+-----------+------+
+| DEP001 | MARKETING   | EMP012 | KOLKATA   |    4 |
+| DEP002 | SALES       | EMP021 | HYDERABAD |    4 |
+| DEP004 | R&D         | EMP007 | HYDERABAD |    2 |
+| DEP005 | HR          | EMP020 | HYDERABAD |    2 |
+| DEP006 | LOGISTICS   | EMP001 | KOLKATA   |    4 |
+| DEP103 | LOGISTICS   | EMP013 | CHENNAI   |    4 |
++--------+-------------+--------+-----------+------+
+mysql>  SELECT NAME,QUALIFICATION FROM EMPLOYEE WHERE EID IN(SELECT HOD FROM DEPARTMENT);
++---------------------+---------------+
+| NAME                | QUALIFICATION |
++---------------------+---------------+
+| ABHIJIT MAHATA      | MTECH         |
+| ARNAB RONG          | MCA           |
+| JAGRITI PRAMANIK    | MCA           |
+| JIBAN MANDAL        | MTECH         |
+| PREETHA CHAKRAVERTI | MCA           |
+| UTSAB TALUKDER      | MCA           |
++---------------------+---------------+
+mysql> SELECT NAME,QUALIFICATION FROM EMPLOYEE WHERE EID IN(SELECT HOD FROM DEPARTMENT WHERE LOCATION='KOLKATA');
++------------------+---------------+
+| NAME             | QUALIFICATION |
++------------------+---------------+
+| JAGRITI PRAMANIK | MCA           |
+| ABHIJIT MAHATA   | MTECH         |
++------------------+---------------+
+
+mysql> SELECT NAME, DESCRIPTION,TOTAL_SALARY FROM EMPLOYEE,DEPARTMENT,SALARY WHERE EMPLOYEE.EID=SALARY.EID AND SALARY.EID=DEPARTMENT.HOD;
++---------------------+-------------+--------------+
+| NAME                | DESCRIPTION | TOTAL_SALARY |
++---------------------+-------------+--------------+
+| JAGRITI PRAMANIK    | MARKETING   |     63750.00 |
+| UTSAB TALUKDER      | SALES       |     68850.00 |
+| ARNAB RONG          | R&D         |     63750.00 |
+| PREETHA CHAKRAVERTI | HR          |     68850.00 |
+| ABHIJIT MAHATA      | LOGISTICS   |     63750.00 |
+| JIBAN MANDAL        | LOGISTICS   |     63750.00 |
++---------------------+-------------+--------------+
+
+mysql> SELECT *FROM EMPLOYEE WHERE AGE<(SELECT AVG(AGE) FROM EMPLOYEE);
++--------+---------------------+---------------+------+--------+
+| EID    | NAME                | QUALIFICATION | AGE  | DEPID  |
++--------+---------------------+---------------+------+--------+
+| EMP002 | ABHISHEK DUTTA      | MCA           |   22 | DEP001 |
+| EMP003 | AKSHAY MONDAL       | MSC           |   23 | DEP004 |
+| EMP004 | AMMRISHA CHOWDHURY  | MSC           |   21 | DEP002 |
+| EMP005 | ANANYA DATTA        | MSC           |   22 | DEP002 |
+| EMP006 | ARITRA PAUL         | MCA           |   21 | NULL   |
+| EMP007 | ARNAB RONG          | MCA           |   21 | DEP004 |
+| EMP009 | BIPUL BARMAN        | MTECH         |   23 | DEP001 |
+| EMP011 | GAGANDEEP           | BTECH         |   22 | DEP103 |
+| EMP016 | MAYA MURMU          | BTECH         |   23 | DEP103 |
+| EMP018 | NABANITA SAHA       | MSC           |   22 | DEP005 |
+| EMP020 | PREETHA CHAKRAVERTI | MCA           |   22 | DEP005 |
++--------+---------------------+---------------+------+--------+
+mysql> SELECT NAME,EMPLOYEE.EID,QUALIFICATION,AGE,DESCRIPTION,TOTAL_SALARY FROM EMPLOYEE,DEPARTMENT,SALARY WHERE EMPLOYEE.EID=DEPARTMENT.HOD AND DEPARTMENT.HOD=SALARY.EID AND AGE<(SELECT AVG(AGE)FROM EMPLOYEE);
++---------------------+--------+---------------+------+-------------+--------------+
+| NAME                | EID    | QUALIFICATION | AGE  | DESCRIPTION | TOTAL_SALARY |
++---------------------+--------+---------------+------+-------------+--------------+
+| ARNAB RONG          | EMP007 | MCA           |   21 | R&D         |     63750.00 |
+| PREETHA CHAKRAVERTI | EMP020 | MCA           |   22 | HR          |     68850.00 |
++---------------------+--------+---------------+------+-------------+--------------+
+INSERT INTO EMPLOYEE VALUES('EMP109','RAJ ROY','MCA','25','DEP103');
+
+mysql> UPDATE DEPARTMENT SET HOD='EMP109' WHERE DEPID='DEP103';
+
+
+mysql> SELECT *FROM DEPARTMENT;
++--------+-------------+--------+-----------+------+
+| DEPID  | DESCRIPTION | HOD    | LOCATION  | NOE  |
++--------+-------------+--------+-----------+------+
+| DEP001 | MARKETING   | EMP012 | KOLKATA   |    4 |
+| DEP002 | SALES       | EMP021 | HYDERABAD |    4 |
+| DEP004 | R&D         | EMP007 | HYDERABAD |    2 |
+| DEP005 | HR          | EMP020 | HYDERABAD |    2 |
+| DEP006 | LOGISTICS   | EMP001 | KOLKATA   |    4 |
+| DEP103 | LOGISTICS   | EMP109 | CHENNAI   |    4 |
++--------+-------------+--------+-----------+------+
+
+
+mysql> SELECT DEPARTMENT.DEPID,DESCRIPTION,AVG(TOTAL_SALARY)AS AVG_SALARY FROM DEPARTMENT,SALARY WHERE DEPARTMENT.HOD=SALARY.EID GROUP BY DEPARTMENT.DEPID;
++--------+-------------+--------------+
+| DEPID  | DESCRIPTION | AVG_SALARY   |
++--------+-------------+--------------+
+| DEP001 | MARKETING   | 63750.000000 |
+| DEP002 | SALES       | 68850.000000 |
+| DEP004 | R&D         | 63750.000000 |
+| DEP005 | HR          | 68850.000000 |
+| DEP006 | LOGISTICS   | 63750.000000 |
++--------+-------------+--------------+
+
+
