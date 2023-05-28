@@ -1,0 +1,73 @@
+  Problem: 
+
+    Consider the following relation schema for a company and solve the following queries:
+    Supply(item_id, supplier_id, purchase_date, unit_cost)
+    Material(item_id, item_name, make)
+
+  •Item_id in table Material is the primary key.
+ Queries:
+   •	Find the names of all materials supplied by ‘s2’ and make in ‘Hin_Ltd’.
+   •	Find the purchase date of the item having unit cost greater than 150.
+   •	Find all item name supplied by ‘B6’.
+   •	List the materials under the make ‘Himalaya’
+
+
+ Solution:
+
+mysql> CREATE TABLE MATERIAL( ITEM_ID VARCHAR(3) PRIMARY KEY, ITEM_NAME VARCHAR(10), MAKE VARCHAR(10));
+
+mysql> CREATE TABLE SUPPLY( ITEM_ID VARCHAR(3), SUPPLIER_ID VARCHAR(3), PURCHASE_DATE DATE, UNIT_COST DECIMAL(10,2),FOREIGN KEY(ITEM_ID) REFERENCES MATERIAL(ITEM_ID));
+
+mysql> INSERT INTO MATERIAL VALUES
+    -> ('I1','IN1','HIN_LTD'),
+    -> ('I2','IN2','HIMALAYA'),
+    -> ('I3','IN3','G2_LTD'),
+    -> ('I4','IN1','HIMALAYA');
+
+mysql> SELECT * FROM MATERIAL;
+
+ITEM_ID	ITEM_NAME	MAKE
+I1	IN1	HIN_LTD
+I2	IN2	HIMALAYA
+I3	IN3	G2_LTD
+I4	IN1	HIMALAYA
+
+mysql> INSERT INTO SUPPLY VALUES
+    -> ('I2','S1','2023-04-25',160.00),
+    -> ('I1','S2','2023-04-24',100.00),
+    -> ('I4','S2','2023-04-24',145.00),
+    -> ('I1','S3','2023-04-30',150.00),
+    -> ('I3','B6','2023-05-01',170.00);
+ 
+mysql> SELECT * FROM SUPPLY;
+
+ITEM_ID	SUPPLIER_ID	PURCHASE_DATE	UNIT_COST
+I2	S1	2023-04-25	160.00
+I1	S2	2023-04-24	100.00
+I4	S2	2023-04-24	145.00
+I1	S3	2023-04-30	150.00
+I3	B6	2023-05-01	170.00
+
+mysql> SELECT ITEM_NAME FROM MATERIAL WHERE MAKE='HIN_LTD' AND ITEM_ID IN(SELECT ITEM_ID FROM SUPPLY WHERE SUPPLIER_ID='S2');
+
+ITEM_NAME
+IN1
+
+mysql> SELECT PURCHASE_DATE FROM SUPPLY WHERE UNIT_COST>150;
+
+PURCHASE_DATE
+2023-04-25
+2023-05-01
+
+mysql> SELECT ITEM_NAME FROM MATERIAL WHERE ITEM_ID IN(SELECT ITEM_ID FROM S
+UPPLY WHERE SUPPLIER_ID='B6');
+
+ITEM_NAME
+IN3
+
+mysql> SELECT ITEM_NAME FROM MATERIAL WHERE MAKE='HIMALAYA';
+
+ITEM_NAME
+IN2
+IN1
+
