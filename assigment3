@@ -1,0 +1,113 @@
+
+
+
+
+
+mysql> create table SAILOR(sid varchar(6) PRIMARY KEY, sname varchar(10),rating int(2),age int(2));
+mysql> desc SAILOR;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sid    | varchar(6)  | NO   | PRI | NULL    |       |
+| sname  | varchar(10) | YES  |     | NULL    |       |
+| rating | int         | YES  |     | NULL    |       |
+| age    | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+mysql>create table BOATS(bid varchar(6) primary key, bname varchar(10), color varchar(10));
+mysql> desc BOATS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| bid   | varchar(6)  | NO   | PRI | NULL    |       |
+| bname | varchar(10) | YES  |     | NULL    |       |
+| color | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+create table RESERVES (sid varchar(6) references SAILOR, bid varchar(6) references BOAT,day varchar(10));
+mysql> desc RESERVES;
++-------+------------+------+-----+---------+-------+
+| Field | Type       | Null | Key | Default | Extra |
++-------+------------+------+-----+---------+-------+
+| sid   | varchar(6) | YES  |     | NULL    |       |
+| bid   | varchar(6) | YES  |     | NULL    |       |
+| day   | varchar(10) | YES  |     | NULL    |       |
++-------+------------+------+-----+---------+-------+
+mysql> ALTER TABLE RESERVES ADD primary key(sid,bid);
+mysql> desc RESERVES;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sid   | varchar(6)  | NO   | PRI | NULL    |       |
+| bid   | varchar(6)  | NO   | PRI | NULL    |       |
+| day   | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+mysql> ALTER TABLE RESERVES ADD foreign key(sid) references SAILOR (sid);
+
+ mysql>ALTER TABLE RESERVES ADD foreign key(bid) references BOATS (bid);
+mysql>insert into SAILOR values('S100','Suman',6,22),('S101','Ramesh',9,30),('S102','Soham',8,45),('S103','Sayak',10,56);
+mysql> SELECT *FROM SAILOR;
++------+--------+--------+------+
+| sid  | sname  | rating | age  |
++------+--------+--------+------+
+| S100 | Suman  |      6 |   22 |
+| S101 | Ramesh |      9 |   30 |
+| S102 | Soham  |      8 |   45 |
+| S103 | Sayak  |     10 |   56 |
++------+--------+--------+------+
+
+mysql>insert into BOATS values('103','ABC','pink'),('100','XYZ','red'),('101','PQR','green'),('102','DEF','blue');
+mysql> SELECT *FROM BOATS;
++-----+-------+-------+
+| bid | bname | color |
++-----+-------+-------+
+| 100 | XYZ   | red   |
+| 101 | PQR   | green |
+| 102 | DEF   | blue  |
+| 103 | ABC   | pink  |
++-----+-------+-------+
+mysql>insert into RESERVES values('S100','100','Monday'),('S101','101','Tuesday'),('S102','102','Wednesday'),('S103','103','Thursday');
+mysql> SELECT *FROM RESERVES;
++------+-----+-----------+
+| sid  | bid | day       |
++------+-----+-----------+
+| S100 | 100 | Monday    |
+| S101 | 101 | Tuesday   |
+| S102 | 102 | Wednesday |
+| S103 | 103 | Thursday  |
++------+-----+-----------+
+
+
+
+
+:::::::::::: QUERIES:::::::::::::::
+1.
+mysql> SELECT sname from SAILOR,BOATS,RESERVES  WHERE SAILOR.sid=RESERVES.sid and RESERVES.bid=BOATS.bid and BOATS.color in('red','green');
++--------+
+| sname  |
++--------+
+| Suman  |
+| Ramesh |
++--------+
+2.
+mysql> SELECT sid from RESERVES,BOATS WHERE RESERVES.bid=BOATS.bid and color='red'and sid not in(SELECT sid from RESERVES,BOATS WHERE RESERVES.bid=BOATS.bid and color='green') ;
++------+
+| sid  |
++------+
+| S100 |
++------+
+3.
+mysql> select sname from SAILOR ,RESERVES WHERE SAILOR.sid=RESERVES.sid and RESERVES.bid='103';
++-------+
+| sname |
++-------+
+| Sayak |
++-------+
+4.
+mysql> select color from BOATS ,RESERVES,SAILOR WHERE BOATS.bid=RESERVES.bid and RESERVES.sid=SAILOR.sid and BOATS.bname='XYZ';
++-------+
+| color |
++-------+
+| red   |
++-------+
+
+
