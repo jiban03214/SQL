@@ -1,0 +1,216 @@
+mysql> create database Pilot_flight_data;
+Query OK, 1 row affected (0.13 sec)
+
+mysql> create table aircraft(
+     aid varchar(3) primary key,
+     aname varchar(20),
+     crusing_range int);
+Query OK, 0 rows affected (1.29 sec)
+
+mysql> describe aircraft;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| aid           | varchar(3)  | NO   | PRI | NULL    |       |
+| aname         | varchar(20) | YES  |     | NULL    |       |
+| crusing_range | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.13 sec)
+
+mysql> create table employees(
+     eid varchar(3) primary key,
+     ename varchar(20),
+     salary decimal(10,2));
+Query OK, 0 rows affected (0.46 sec)
+
+mysql> describe employees;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| eid    | varchar(3)    | NO   | PRI | NULL    |       |
+| ename  | varchar(20)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table certified(
+     eid varchar(3),
+     aid varchar(3),
+     foreign key(eid) references employees(eid),
+     foreign key(aid) references aircraft(aid),
+     primary key(eid,aid));
+Query OK, 0 rows affected (0.56 sec)
+
+mysql> describe certified;
++-------+------------+------+-----+---------+-------+
+| Field | Type       | Null | Key | Default | Extra |
++-------+------------+------+-----+---------+-------+
+| eid   | varchar(3) | NO   | PRI | NULL    |       |
+| aid   | varchar(3) | NO   | PRI | NULL    |       |
++-------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table flights(
+     f_no varchar(3),
+     from_ varchar(20),
+     to_ varchar(20),
+     distance decimal(10,2),
+     departs time,
+     arrive time,
+     fare decimal(10,2),
+     foreign key(f_no) references aircraft(aid));
+Query OK, 0 rows affected (0.58 sec)
+
+mysql> describe flights;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| f_no     | varchar(3)    | YES  | MUL | NULL    |       |
+| from_    | varchar(20)   | YES  |     | NULL    |       |
+| to_      | varchar(20)   | YES  |     | NULL    |       |
+| distance | decimal(10,2) | YES  |     | NULL    |       |
+| departs  | time          | YES  |     | NULL    |       |
+| arrive   | time          | YES  |     | NULL    |       |
+| fare     | decimal(10,2) | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> insert into aircraft values
+     ('A01','Airbus',1000),
+     ('A02','Boying',8000),
+     ('A03','Jet',7000),
+     ('A04','Aircruser',5000),
+     ('A05','Euro Cruser',3000),
+     ('A06','Rafale',2500),
+     ('A07','Indo Cruser',2800);
+Query OK, 7 rows affected (0.40 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from aircraft;
++-----+-------------+---------------+
+| aid | aname       | crusing_range |
++-----+-------------+---------------+
+| A01 | Airbus      |          1000 |
+| A02 | Boying      |          8000 |
+| A03 | Jet         |          7000 |
+| A04 | Aircruser   |          5000 |
+| A05 | Euro Cruser |          3000 |
+| A06 | Rafale      |          2500 |
+| A07 | Indo Cruser |          2800 |
++-----+-------------+---------------+
+7 rows in set (0.05 sec)
+
+mysql> insert into employees values
+     ('E01','Utsab Talukder',150000),
+     ('E02','Jiban Mandal',95000),
+     ('E03','Abhijit Mahato',90000),
+     ('E04','Snigdha Sarkar',93000),
+     ('E05','Ruchi Jain',130000),
+     ('E06','Subir Roy',90000),
+     ('E07','Jack Lannister',150000);
+Query OK, 7 rows affected (0.08 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from employees;
++-----+----------------+-----------+
+| eid | ename          | salary    |
++-----+----------------+-----------+
+| E01 | Utsab Talukder | 150000.00 |
+| E02 | Jiban Mandal   |  95000.00 |
+| E03 | Abhijit Mahato |  90000.00 |
+| E04 | Snigdha Sarkar |  93000.00 |
+| E05 | Ruchi Jain     | 130000.00 |
+| E06 | Subir Roy      |  90000.00 |
+| E07 | Jack Lannister | 150000.00 |
++-----+----------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into CERTIFIED values
+     ('E02','A01'),
+     ('E03','A01'),
+     ('E01','A02'),
+     ('E04','A02'),
+     ('E05','A03'),
+     ('E06','A03'),
+     ('E07','A04'),
+     ('E04','A04'),
+     ('E03','A05'),
+     ('E05','A05'),
+     ('E01','A06'),
+     ('E07','A06'),
+     ('E05','A07'),
+     ('E03','A07');
+Query OK, 14 rows affected (0.10 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> insert into FLIGHTS values
+     ('A01','Chennai','Bangaluru',336,'10:30:00','12:02:00',4600),
+     ('A02','Delhi','Kolkata',1562,'11:30:00','2:00:00',8000),
+     ('A03','Mumbai','Bagdogra',2190,'08:00:00','10:45:00',7895),
+     ('A04','Delhi','Katmandu',1138,'09:05:00','12:25:00',13790),
+     ('A05','Kolkata','Bagdogra',593,'10:12:00','11:40:00',4500),
+     ('A06','Chandigarh','Mumbai',1612,'12:30:00','12:45:00',8943),
+     ('A07','Bengaluru','Kochi',547,'01:30:00','2:50:00',4378);
+Query OK, 7 rows affected (0.11 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from FLIGHTS;
++------+------------+-----------+----------+----------+----------+----------+
+| f_no | from_      | to_       | distance | departs  | arrive   | fare     |
++------+------------+-----------+----------+----------+----------+----------+
+| A01  | Chennai    | Bangaluru |   336.00 | 10:30:00 | 12:02:00 |  4600.00 |
+| A02  | Delhi      | Kolkata   |  1562.00 | 11:30:00 | 02:00:00 |  8000.00 |
+| A03  | Mumbai     | Bagdogra  |  2190.00 | 08:00:00 | 10:45:00 |  7895.00 |
+| A04  | Delhi      | Katmandu  |  1138.00 | 09:05:00 | 12:25:00 | 13790.00 |
+| A05  | Kolkata    | Bagdogra  |   593.00 | 10:12:00 | 11:40:00 |  4500.00 |
+| A06  | Chandigarh | Mumbai    |  1612.00 | 12:30:00 | 12:45:00 |  8943.00 |
+| A07  | Bengaluru  | Kochi     |   547.00 | 01:30:00 | 02:50:00 |  4378.00 |
++------+------------+-----------+----------+----------+----------+----------+
+7 rows in set (0.00 sec)
+::::::::::::::::QUERIES::::::::::::::::::::
+1.
+mysql> SELECT ANAME FROM AIRCRAFT,EMPLOYEES,CERTIFIED WHERE AIRCRAFT.AID=CERTIFIED.AID AND CERTIFIED.EID=EMPLOYEES.EID AND SALARY>100000;
++-------------+
+| ANAME       |
++-------------+
+| Boying      |
+| Rafale      |
+| Jet         |
+| Euro Cruser |
+| Indo Cruser |
+| Aircruser   |
+| Rafale      |
++-------------+
+2.
+mysql> SELECT ENAME,SALARY FROM EMPLOYEES WHERE SALARY>(SELECT AVG(SALARY) FROM EMPLOYEES);
++----------------+-----------+
+| ENAME          | SALARY    |
++----------------+-----------+
+| Utsab Talukder | 150000.00 |
+| Ruchi Jain     | 130000.00 |
+| Jack Lannister | 150000.00 |
++----------------+-----------+
+3.
+mysql> SELECT ANAME ,AVG(SALARY) FROM AIRCRAFT,CERTIFIED,EMPLOYEES WHERE AIRCRAFT.AID=CERTIFIED.AID AND CERTIFIED.EID=EMPLOYEES.EID AND CRUSING_RANGE>1000 GROUP BY ANAME;
++-------------+---------------+
+| ANAME       | AVG(SALARY)   |
++-------------+---------------+
+| Boying      | 121500.000000 |
+| Rafale      | 150000.000000 |
+| Euro Cruser | 110000.000000 |
+| Indo Cruser | 110000.000000 |
+| Aircruser   | 121500.000000 |
+| Jet         | 110000.000000 |
++-------------+---------------+
+4.
+mysql> SELECT ENAME FROM EMPLOYEES,AIRCRAFT,CERTIFIED WHERE EMPLOYEES.EID=CERTIFIED.EID AND CERTIFIED.AID=AIRCRAFT.AID AND CRUSING_RANGE>3000 AND ANAME NOT Like 'boying%';
++----------------+
+| ENAME          |
++----------------+
+| Snigdha Sarkar |
+| Ruchi Jain     |
+| Subir Roy      |
+| Jack Lannister |
++----------------+
+
+
