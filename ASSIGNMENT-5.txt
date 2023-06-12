@@ -1,0 +1,231 @@
+mysql> create database Shipment_company_database;
+Query OK, 1 row affected (0.13 sec)
+
+mysql> use Shipment_company_database;
+Database changed
+
+mysql> create table Customer(
+     cust_id varchar(3) primary key,
+     cust_name varchar(20),
+     annual_revenue decimal(10,2),
+     cust_type varchar(20));
+Query OK, 0 rows affected (0.39 sec)
+
+mysql> desc Customer;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| cust_id        | varchar(3)    | NO   | PRI | NULL    |       |
+| cust_name      | varchar(20)   | YES  |     | NULL    |       |
+| annual_revenue | decimal(10,2) | YES  |     | NULL    |       |
+| cust_type      | varchar(20)   | YES  |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> create table Truck(
+     truck_no varchar(3) primary key,
+     driver_name varchar(20));
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> desc Truck;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| truck_no    | varchar(3)  | NO   | PRI | NULL    |       |
+| driver_name | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table City(
+     city_name varchar(20) primary key,
+     population int);
+Query OK, 0 rows affected (0.59 sec)
+
+mysql> desc City;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| city_name  | varchar(20) | NO   | PRI | NULL    |       |
+| population | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table Shipment(
+     shipment_no varchar(3),
+     cust_id varchar(3),
+     weight decimal(10,2),
+     truck_no varchar(3),
+     destination varchar(20),
+     ship_date date,
+     foreign key(cust_id) references Customer(cust_id),
+     foreign key(truck_no) references Truck(truck_no),
+     foreign key(destination) references City(city_name),
+     primary key(shipment_no,cust_id));
+Query OK, 0 rows affected (1.01 sec)
+
+mysql> desc Shipment;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| shipment_no | varchar(3)    | NO   | PRI | NULL    |       |
+| cust_id     | varchar(3)    | NO   | PRI | NULL    |       |
+| weight      | decimal(10,2) | YES  |     | NULL    |       |
+| truck_no    | varchar(3)    | YES  | MUL | NULL    |       |
+| destination | varchar(20)   | YES  | MUL | NULL    |       |
+| ship_date   | date          | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> show tables;
++------------------------------+
+| Tables_in_Shipment_to_Custmr |
++------------------------------+
+| City                         |
+| Customer                     |
+| Shipment                     |
+| Truck                        |
++------------------------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into Customer values
+     ('C01','D & Sons',569045,'Shop'),
+     ('C02','Bikram Kumar',90456,'Indivisual'),
+     ('C03','Patanjali PVTL',1078542,'Company'),
+     ('C04','Ajanta Shoes Factory',1543910,'Factory'),
+     ('C05','Soumitra Roy',50459,'Indivisual');
+Query OK, 5 rows affected (0.10 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select *from Customer;
++---------+----------------------+----------------+------------+
+| cust_id | cust_name            | annual_revenue | cust_type  |
++---------+----------------------+----------------+------------+
+| C01     | D & Sons             |      569045.00 | Shop       |
+| C02     | Bikram Kumar         |       90456.00 | Indivisual |
+| C03     | Patanjali PVTL       |     1078542.00 | Company    |
+| C04     | Ajanta Shoes Factory |     1543910.00 | Factory    |
+| C05     | Soumitra Roy         |       50459.00 | Indivisual |
++---------+----------------------+----------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Truck values
+     ('T01','Rabi Mandal'),
+     ('T02','Amiya Sarkar'),
+     ('T03','Rathindra Barman');
+Query OK, 3 rows affected (0.09 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select *from Truck;
++----------+-------------+
+| truck_no | driver_name |
++----------+-------------+
+| T01      | Rabi        |
+| T02      | Amiya       |
+| T03      | Rathindra   |
++----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into City values
+     ('Kolkata',14900000),
+     ('Kalyani',136000),
+     ('Bankura',356978),
+     ('Malda',218976),
+     ('Asansole',1243574);
+Query OK, 5 rows affected (0.09 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> Select *from City;
++-----------+------------+
+| city_name | population |
++-----------+------------+
+| Asansole  |    1243574 |
+| Bankura   |     356978 |
+| Kalyani   |     136000 |
+| Kolkata   |   14900000 |
+| Malda     |     218976 |
++-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into SHIPMENT values
+     ('S01','C01',245,'T02','Kolkata','2023-01-12'),
+     ('S02','C02',125,'T01','Kalyani','2023-03-09'),
+     ('S03','C02',95,'T03','Bankura','2023-03-10'),
+     ('S04','C03',456,'T01','Kolkata','2023-02-11'),
+     ('S05','C03',500,'T02','Kalyani','2023-02-12'),
+     ('S06','C03',350,'T01','Malda','2023-04-08'),
+     ('S07','C04',322,'T02','Malda','2023-04-13'),
+     ('S08','C04',400,'T01','Asansole','2023-04-16'),
+     ('S09','C04',600,'T02','Kolkata','2023-04-28'),
+     ('S10','C04',580,'T02','Kalyani','2023-05-05'),
+     ('S11','C04',400,'T03','Bankura','2023-05-07'),
+     ('S12','C05',213,'T03','Asansole','2023-06-09'),
+     ('S13','C05',250,'T01','Malda','2023-06-10'),
+     ('S014','C02',249,'T02','Kolkata','2023-03-12'),
+     ('S015','C05',456,'T02','Kolkata','2023-04-12');
+
+mysql> SELECT*FROM SHIPMENT;
++-------------+---------+--------+----------+-------------+------------+
+| SHIPMENT_NO | CUST_ID | WEIGHT | TRUCK_NO | DESTINATION | SHIP_DATE  |
++-------------+---------+--------+----------+-------------+------------+
+| S01         | C01     | 245.00 | T02      | Kolkata     | 2023-01-12 |
+| S014        | C02     | 249.00 | T02      | Kolkata     | 2023-03-12 |
+| S015        | C05     | 456.00 | T02      | Kolkata     | 2023-04-12 |
+| S02         | C02     | 125.00 | T01      | Kalyani     | 2023-03-09 |
+| S03         | C02     |  95.00 | T03      | Bankura     | 2023-03-10 |
+| S04         | C03     | 456.00 | T01      | Kolkata     | 2023-02-11 |
+| S05         | C03     | 500.00 | T02      | Kalyani     | 2023-02-12 |
+| S06         | C03     | 350.00 | T01      | Malda       | 2023-04-08 |
+| S07         | C04     | 322.00 | T02      | Malda       | 2023-04-13 |
+| S08         | C04     | 400.00 | T01      | Asansole    | 2023-04-16 |
+| S09         | C04     | 600.00 | T02      | Kolkata     | 2023-04-28 |
+| S10         | C04     | 580.00 | T02      | Kalyani     | 2023-05-05 |
+| S11         | C04     | 400.00 | T03      | Bankura     | 2023-05-07 |
+| S12         | C05     | 213.00 | T03      | Asansole    | 2023-06-09 |
+| S13         | C05     | 250.00 | T01      | Malda       | 2023-06-10 |
++-------------+---------+--------+----------+-------------+------------+
+
+
+
+
+:::::::::::::::QUERIES::::::::::::::::
+1.
+mysql> SELECT DESTINATION FROM SHIPMENT GROUP BY DESTINATION HAVING COUNT(DISTINCT CUST_ID)=(SELECT COUNT(CUST_ID)FROM CUSTOMER);
++-------------+
+| DESTINATION |
++-------------+
+| Kolkata     |
++-------------+
+2.
+mysql> SELECT AVG(WEIGHT)FROM SHIPMENT,CITY WHERE CITY.CITY_NAME=SHIPMENT.DESTINATION GROUP BY DESTINATION HAVING MAX(POPULATION);
++-------------+
+| AVG(WEIGHT) |
++-------------+
+|  306.500000 |
+|  247.500000 |
+|  401.666667 |
+|  401.200000 |
+|  307.333333 |
++-------------+
+3.
+mysql> SELECT  CUST_NAME,ANNUAL_REVENUE FROM CUSTOMER,SHIPMENT,TRUCK WHERE CUSTOMER.CUST_ID=SHIPMENT.CUST_ID AND TRUCK.TRUCK_NO=SHIPMENT.TRUCK_NO AND DRIVER_NAME LIKE 'Amiya%';
++----------------------+----------------+
+| CUST_NAME            | ANNUAL_REVENUE |
++----------------------+----------------+
+| D & Sons             |      569045.00 |
+| Bikram Kumar         |       90456.00 |
+| Soumitra Roy         |       50459.00 |
+| Patanjali PVTL       |     1078542.00 |
+| Ajanta Shoes Factory |     1543910.00 |
+| Ajanta Shoes Factory |     1543910.00 |
+| Ajanta Shoes Factory |     1543910.00 |
++----------------------+----------------+
+4.
+mysql> SELECT CITY_NAME,POPULATION FROM CITY WHERE POPULATION= (SELECT MIN(POPULATION)
+FROM CITY);
++-----------+------------+
+| CITY_NAME | POPULATION |
++-----------+------------+
+| Kalyani   |     136000 |
++-----------+------------+
+
+
