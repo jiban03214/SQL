@@ -1,0 +1,254 @@
+mysql> create database Bank_database;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> use Bank_database;
+Database changed
+
+mysql> use Bank_database;
+Database changed
+mysql> create table Customer(
+     cust_id varchar(3) primary key,
+     name varchar(20),
+     street varchar(20),
+     city varchar(20));
+Query OK, 0 rows affected (0.36 sec)
+
+mysql> desc Customer;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cust_id | varchar(3)  | NO   | PRI | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| street  | varchar(20) | YES  |     | NULL    |       |
+| city    | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table Branch(
+      br_name varchar(20) primary key,
+      city varchar(20),
+      assets decimal(10,2));
+Query OK, 0 rows affected (0.42 sec)
+
+mysql> desc Branch;
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| br_name | varchar(20)   | NO   | PRI | NULL    |       |
+| city    | varchar(20)   | YES  |     | NULL    |       |
+| assets  | decimal(10,2) | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> create table Borrow(
+     loan_no varchar(3) primary key,
+     br_name varchar(20),
+     amount decimal(10,2),
+     foreign key(br_name) references Branch(br_name));
+Query OK, 0 rows affected (0.46 sec)
+
+mysql> desc Borrow;
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| loan_no | varchar(3)    | NO   | PRI | NULL    |       |
+| br_name | varchar(20)   | YES  | MUL | NULL    |       |
+| amount  | decimal(10,2) | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table Account(
+     acc_no varchar(6) primary key,
+     br_name varchar(20),
+     bal decimal(10,2),
+     cust_name varchar(20),
+     foreign key(br_name) references Branch(br_name));
+Query OK, 0 rows affected (0.84 sec)
+
+mysql> desc Account;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| acc_no    | varchar(6)    | NO   | PRI | NULL    |       |
+| br_name   | varchar(20)   | YES  | MUL | NULL    |       |
+| bal       | decimal(10,2) | YES  |     | NULL    |       |
+| cust_name | varchar(20)   | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into CUSTOMER values
+      ('C01','Utsab Talukder','ITI More','Kalyani'),
+      ('C02','Jiban Mandal','Rabindra Sarani','Bankura'),
+      ('C03','Aritra Paul','Court More','Siliguri'),
+      ('C04','Abir Poddar','1st Lane','Nabadwip'),
+      ('C05','Joy Roy','420 More','Malda'),
+      ('C06','Ram Soren','Kathaltala','Kalyani'),
+      ('C07','Bipul Barman','Kathaltala','Kalyani');
+
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select *from CUSTOMER;
++---------+----------------+-----------------+----------+
+| cust_id | name           | street          | city     |
++---------+----------------+-----------------+----------+
+| C01     | Utsab Talukder | ITI More        | Kalyani  |
+| C02     | Jiban Mandal   | Rabindra Sarani | Bankura  |
+| C03     | Aritra Paul    | Court More      | Siliguri |
+| C04     | Abir Poddar    | 1st Lane        | Nabadwip |
+| C05     | Joy Roy        | 420 More        | Malda    |
+| C06     | Ram Soren      | Kathaltala      | Kalyani  |
+| C07     | Bipul Barman   | Kathaltala      | Kalyani  |
++---------+----------------+-----------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into BRANCH values
+     ('Ashighar','Siliguri',4598251),
+     ('Bishnupriya','Nabadwip',2794551),
+     ('Chatna','Bankura',2550000),
+     ('English Bazar','Malda',12874527),
+     ('Ghoshpara','Kalyani',4500000),
+     ('Kalyani Main','Kalyani',15500000),
+     ('Matigara','Siliguri',25598251),
+     ('Old Malda','Malda',2894549),
+     ('Shilpanchal','Kalyani',6500000),
+     ('Susunia','Bankura',3550000);
+Query OK, 10 rows affected (0.42 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select *from BRANCH;
++---------------+----------+-------------+
+| br_name       | city     | assets      |
++---------------+----------+-------------+
+| Ashighar      | Siliguri |  4598251.00 |
+| Bishnupriya   | Nabadwip |  2794551.00 |
+| Chatna        | Bankura  |  2550000.00 |
+| English Bazar | Malda    | 12874527.00 |
+| Ghoshpara     | Kalyani  |  4500000.00 |
+| Kalyani Main  | Kalyani  | 15500000.00 |
+| Matigara      | Siliguri | 25598251.00 |
+| Old Malda     | Malda    |  2894549.00 |
+| Shilpanchal   | Kalyani  |  6500000.00 |
+| Susunia       | Bankura  |  3550000.00 |
++---------------+----------+-------------+
+10 rows in set (0.00 sec)
+
+
+mysql> insert into BORROW values
+     ('L01','Ashighar',15000),
+     ('L02','Bishnupriya',13560),
+     ('L03','Chatna',11060),
+     ('L04','English Bazar',11060),
+     ('L05','Ghoshpara',15469),
+     ('L06','Kalyani Main',8000),
+     ('L07','Matigara',25000),
+     ('L08','Old Malda',25894),
+     ('L09','Shilpanchal',22000),
+     ('L10','Susunia',22500),
+     ('L11','Kalyani Main',45000);
+Query OK, 10 rows affected (0.07 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select *from BORROW;
++---------+---------------+----------+
+| loan_no | br_name       | amount   |
++---------+---------------+----------+
+| L01     | Ashighar      | 15000.00 |
+| L02     | Bishnupriya   | 13560.00 |
+| L03     | Chatna        | 11060.00 |
+| L04     | English Bazar | 11060.00 |
+| L05     | Ghoshpara     | 15469.00 |
+| L06     | Kalyani Main  |  8000.00 |
+| L07     | Matigara      | 25000.00 |
+| L08     | Old Malda     | 25894.00 |
+| L09     | Shilpanchal   | 22000.00 |
+| L10     | Susunia       | 22500.00 |
++---------+---------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> insert into ACCOUNT values
+     ('795418','Kalyani Main',50000,'Utsab Talukder'),
+     ('425169','Ghoshpara',459652,'Bipul Barman'),
+     ('825469','Shilpanchal',865010,'Ram Soren'),
+     ('162549','Chatna',155854,'Jiban Mandal'),
+     ('248597','Matigara',812565,'Aritra Paul'),
+     ('487956','Bishnupriya',478549,'Abir Poddar'),
+     ('964851','English Bazar',185468,'Joy Roy');
+Query OK, 7 rows affected (0.20 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from ACCOUNT;
++--------+---------------+-----------+----------------+
+| acc_no | br_name       | bal       | cust_name      |
++--------+---------------+-----------+----------------+
+| 162549 | Chatna        | 155854.00 | Jiban Mandal   |
+| 248597 | Matigara      | 812565.00 | Aritra Paul    |
+| 425169 | Ghoshpara     | 459652.00 | Bipul Barman   |
+| 487956 | Bishnupriya   | 478549.00 | Abir Poddar    |
+| 795418 | Kalyani Main  |  50000.00 | Utsab Talukder |
+| 825469 | Shilpanchal   | 865010.00 | Ram Soren      |
+| 964851 | English Bazar | 185468.00 | Joy Roy        |
++--------+---------------+-----------+----------------+
+
+mysql> CREATE VIEW LOAN_COUNT AS(SELECT BR_NAME,COUNT(LOAN_NO)AS LOAN_COUNT FROM BORROW GROUP BY BR_NAME);
+
+mysql> SELECT*FROM LOAN_COUNT;
++---------------+------------+
+| BR_NAME       | LOAN_COUNT |
++---------------+------------+
+| Ashighar      |          1 |
+| Bishnupriya   |          1 |
+| Chatna        |          1 |
+| English Bazar |          1 |
+| Ghoshpara     |          1 |
+| Kalyani Main  |          2 |
+| Matigara      |          1 |
+| Old Malda     |          1 |
+| Shilpanchal   |          1 |
+| Susunia       |          1 |
++---------------+------------+
+
+
+::::::::::Queries::::::::::::
+1.
+mysql> SELECT BR_NAME,CITY FROM BRANCH WHERE BR_NAME=(SELECT BR_NAME FROM BORROW GROUP BY BR_NAME ORDER BY COUNT(LOAN_NO) DESC LIMIT 1);
++--------------+---------+
+| BR_NAME      | CITY    |
++--------------+---------+
+| Kalyani Main | Kalyani |
++--------------+---------+
+
+2.
+mysql> select LOAN_NO, amount from BORROW where amount>12000;
++---------+----------+
+| LOAN_NO | amount   |
++---------+----------+
+| L01     | 15000.00 |
+| L02     | 13560.00 |
+| L05     | 15469.00 |
+| L07     | 25000.00 |
+| L08     | 25894.00 |
+| L09     | 22000.00 |
+| L10     | 22500.00 |
+| L11     | 45000.00 |
++---------+----------+
+2.
+mysql> select NAME from CUSTOMER where street=(select STREET from CUSTOMER where name like 'Ram%') and CITY=(select CITY from CUSTOMER where name like 'Ram%');
++--------------+
+| NAME         |
++--------------+
+| Ram Soren    |
+| Bipul Barman |
++--------------+
+
+3.
+select CUST_NAME, ACC_NO from ACCOUNT, BRANCH where ACCOUNT.BR_NAME=BRANCH.BR_NAME and ACCOUNT.BR_NAME in (select BR_NAME from BRANCH where CITY='Kalyani');
++----------------+--------+
+| CUST_NAME      | ACC_NO |
++----------------+--------+
+| Bipul Barman   | 425169 |
+| Utsab Talukder | 795418 |
+| Ram Soren      | 825469 |
++----------------+--------+
+
+4.
+
