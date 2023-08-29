@@ -1,0 +1,28 @@
+ffimport numpy as np
+import math
+import cv2
+f=open("lenna.pgm","r")
+p=f.readline()
+p1=f.readline()
+p2=f.readline()
+p3=f.readline()
+w,h=[int(i) for i in p2.split()]
+print(w)
+print(h)
+k=np.zeros((h,w),np.int)
+for i in range(h):
+    for j in range(w):
+        k[i,j]=f.readline()
+f.close()        
+g=open("lenna2.pgm","w")
+g.write("%s"%p)
+g.write("%s"%p1)
+g.write("%s"%p2)
+g.write("%s"%p3)
+
+for i in range(h):
+    for j in range(w):
+        g.write("%d\n"%(255-k[i,j]))
+g.close()
+#cv2.imshow("l",k)
+#cv2.waitKey(0)
